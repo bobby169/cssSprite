@@ -2,7 +2,10 @@
   "name": "cssSprite",
   "version": "1.0.0",
   "description": "CssSprite，方便对逐桢动画（连续的sprite图片）在DOM中进行渲染，控制动画播放。",
-  "repository": "hebo/cssSprite",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bobby169/cssSprite.git"
+  },
   "license": "MIT",
   "main": "src/cssSprite.js",
   "keywords": [
