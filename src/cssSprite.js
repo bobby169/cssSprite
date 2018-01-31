@@ -1,8 +1,8 @@
 /*!
  * DATE: 2018-01-25
- * @author: hebo
+ * @author: bobby169
  * 115393304
- * (c) iqianjin.com
+ * (c) bobby169
  */
 
 (function (root) {
