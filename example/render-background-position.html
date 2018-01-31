@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>渲染方式background-position</title>
+    <style>
+        .animation {
+            background: url(../images/zhaoyun.png);
+            width: 80px;
+            height: 83px;
+        }
+    </style>
+</head>
+<body>
+<h3>渲染方式background-position</h3>
+<div class="animation animation-2"></div>
+<button id="left">Go Left</button>
+<button id="right">Go Right</button>
+<button id="play">Play</button>
+<button id="stop">Stop</button>
+<button id="gotoAndPlay">gotoAndPlay</button>
+<button id="gotoAndStop">gotoAndStop</button>
+<button id="changeFPS">Change FPS</button>
+<script src="../src/cssSprite.js"></script>
+<script>
+    var currentFps = 12;
+    var sprite = new CssSprite({
+        //images:'../images/zhaoyun.png',
+        target:'.animation',
+        fps:currentFps,
+        paused: false,
+        //frames: [[82,0,80,83],[164,255,79,83],[82,340,80,83],[0,85,80,83],[82,425,80,83],[164,85,79,83],[82,255,80,83],[0,425,80,83],[164,0,79,83],[0,0,80,83],[0,170,80,83],[0,255,80,83],[164,170,79,83],[0,340,80,83],[82,85,80,83],[82,170,80,83]],
+        frames: [[82,0],[164,255],[82,340],[0,85],[82,425],[164,85],[82,255],[0,425],[164,0],[0,0],[0,170],[0,255],[164,170],[0,340],[82,85],[82,170]],
+        animations: {
+            runRight: [0,8,9,10,11,12,13,14],
+            runLeft: [15,1,2,3,4,5,6,7]
+        },
+        animations: {
+            runRight: {
+                frames:[0,8,9,10,11,12,13,14],
+                speed:0.5,//0.5倍速度，相对于当前fps,
+                next:'runLeft'
+            },
+            runLeft: {
+                frames:[15,1,2,3,4,5,6,7],
+                speed:2,//2倍速度，相对于当前fps
+                next:'runRight'
+            }
+        },
+        animationend: function(){
+            console.log('animation End');
+        },
+        change:function (currentFrame,frameIndex) {
+            //console.info(currentFrame,frameIndex);
+        }
+    });
+
+    console.info(sprite.totalFrames)
+
+    document.getElementById('left').addEventListener('click',function (ev) {
+        sprite.play('runLeft');
+    },false)
+
+    document.getElementById('right').addEventListener('click',function (ev) {
+        sprite.play('runRight');
+    },false)
+
+    document.getElementById('play').addEventListener('click',function (ev) {
+        sprite.play();
+    },false)
+
+    document.getElementById('stop').addEventListener('click',function (ev) {
+        sprite.stop();
+    },false)
+
+    document.getElementById('gotoAndPlay').addEventListener('click',function (ev) {
+        //console.info('gotoAndPlay');
+        sprite.gotoAndPlay(0);
+    },false)
+
+    document.getElementById('gotoAndStop').addEventListener('click',function (ev) {
+        //console.info('gotoAndStop');
+        //sprite.gotoAndStop('runLeft');
+        sprite.gotoAndStop(2);
+    },false)
+
+    document.getElementById('changeFPS').addEventListener('click',function (ev) {
+        currentFps = (currentFps === 60) ? 12 : 60;
+        sprite.fps(currentFps);
+    },false)
+
+</script>
+</body>
+</html>

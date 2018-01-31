@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>adidas</title>
+    <script src="libs/preloadjs-0.6.2.min.js"></script>
+    <style>
+        .animation {
+            width: 520px;
+            height: 520px;
+        }
+    </style>
+</head>
+<body>
+<h3>用鼠标横向拖动旋转3D鞋子</h3>
+<div class="animation animation-2"></div>
+<script src="../src/cssSprite.js"></script>
+<script>
+    var images = [];
+    var sprite;
+    var currentFps = 30;
+    var queue = new createjs.LoadQueue(false);
+    var manifest = [
+        {id:1,src:'../images/adidas/1.png'},
+        {id:2,src:'../images/adidas/2.png'},
+        {id:3,src:'../images/adidas/3.png'},
+        {id:4,src:'../images/adidas/4.png'},
+        {id:5,src:'../images/adidas/5.png'},
+        {id:6,src:'../images/adidas/6.png'},
+        {id:7,src:'../images/adidas/7.png'},
+        {id:8,src:'../images/adidas/8.png'},
+        {id:9,src:'../images/adidas/9.png'},
+        {id:10,src:'../images/adidas/10.png'},
+        {id:11,src:'../images/adidas/11.png'},
+        {id:12,src:'../images/adidas/12.png'},
+    ]
+    queue.loadManifest(manifest);
+    queue.on("fileload", function (evt) {
+        images.push(evt.result);
+    });
+
+    queue.on('complete',function (evt) {
+        //console.info(images)
+        createSprite();
+    });
+
+    function createSprite() {
+        sprite = new CssSprite({
+            target:'.animation',
+            fps:currentFps,
+            //duration:10000,
+            paused: false,
+            images:images,
+            animationend: function(){
+                console.log('animation End');
+                document.querySelector('.animation').querySelectorAll('img').forEach(function (value) {
+                    value.addEventListener('mousedown',function (evt) {
+                        evt.preventDefault();
+                    })
+                })
+            },
+            change:function (currentFrame) {
+                //console.info(currentFrame);
+            }
+        });
+    }
+
+    var lastMouseX = 0;
+    var lastMouseY = 0;
+    var curMouseX = 0;
+    var curMouseY = 0;
+
+    document.addEventListener("mousedown", mouseDownHandler);
+
+    document.addEventListener("mouseup", mouseUpHandler);
+
+
+    function mouseDownHandler(evt) {
+        lastMouseX = evt.pageX;
+        lastMouseY = evt.pageY;
+        curMouseX = evt.pageX;
+        curMouseY = evt.pageY;
+
+        document.addEventListener("mousemove", mouseMoveHandler);
+    }
+
+    function mouseMoveHandler(evt) {
+        curMouseX = evt.pageX;
+        curMouseY = evt.pageY;
+        if(curMouseX-lastMouseX>0){
+            sprite.frameIndex ++;
+            sprite.gotoAndStop(sprite.frameIndex);
+        }else{
+            sprite.frameIndex --;
+            sprite.gotoAndStop(sprite.frameIndex);
+        }
+    }
+
+    function mouseUpHandler(evt) {
+        curMouseX = evt.pageX;
+        curMouseY = evt.pageY;
+
+        document.removeEventListener("mousemove", mouseMoveHandler);
+    }
+
+</script>
+</body>
+</html>

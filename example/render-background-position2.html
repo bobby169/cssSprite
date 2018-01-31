@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>渲染方式background-position</title>
+    <style>
+
+        .animation-2 {
+            width: 165px;
+            height: 292px;
+        }
+    </style>
+</head>
+<body>
+<h3>渲染方式background-position</h3>
+<div class="animation animation-2"></div>
+<button id="run">run</button>
+<button id="jump">jump</button>
+<button id="play">Play</button>
+<button id="stop">Stop</button>
+<button id="gotoAndPlay">gotoAndPlay</button>
+<button id="gotoAndStop">gotoAndStop</button>
+<button id="changeFPS">Change FPS</button>
+<script src="../src/cssSprite.js"></script>
+<script>
+    var currentFps = 30;
+
+    var sprite = new CssSprite({
+        target:'.animation',
+        images:'../images/spritesheet_grant.png',
+        fps:currentFps,
+        paused: false,
+        animations: {
+            "run": CssSprite.createAnimations(0,25),
+            "jump":CssSprite.createAnimations(26,63)
+        },
+        frames:{
+            // width:165,
+            // height:292,
+            count:64
+        },
+        animationend: function(){
+            console.log('animation End');
+        },
+        change:function (currentFrame) {
+            //TODO:这里执行stop出错
+            if(currentFrame === 63){
+                sprite.fps(60);
+                sprite.gotoAndPlay('run');
+            }
+        }
+    });
+
+    setTimeout(function () {
+        console.info(sprite.totalFrames)
+    },1000)
+
+    document.getElementById('run').addEventListener('click',function (ev) {
+        sprite.play('run');
+    },false)
+
+    document.getElementById('jump').addEventListener('click',function (ev) {
+        sprite.play('jump');
+    },false)
+
+    document.getElementById('play').addEventListener('click',function (ev) {
+        sprite.play();
+    },false)
+
+    document.getElementById('stop').addEventListener('click',function (ev) {
+        sprite.stop();
+    },false)
+
+    document.getElementById('gotoAndPlay').addEventListener('click',function (ev) {
+        sprite.gotoAndPlay(0);
+    },false)
+
+    document.getElementById('gotoAndStop').addEventListener('click',function (ev) {
+        //sprite.gotoAndStop('run');
+        sprite.gotoAndStop(2);
+    },false)
+
+    document.getElementById('changeFPS').addEventListener('click',function (ev) {
+        currentFps = (currentFps === 60) ? 30 : 60;
+        sprite.fps(currentFps);
+    },false)
+
+</script>
+</body>
+</html>

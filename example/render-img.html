@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>渲染方式img标签</title>
+    <script src="libs/preloadjs-0.6.2.min.js"></script>
+    <style>
+        .animation {
+            width: 80px;
+            height: 83px;
+        }
+    </style>
+</head>
+<body>
+<h3>渲染方式img标签</h3>
+<div class="animation animation-2"></div>
+<button id="left">Go Left</button>
+<button id="right">Go Right</button>
+<button id="play">Play</button>
+<button id="stop">Stop</button>
+<button id="gotoAndPlay">gotoAndPlay</button>
+<button id="gotoAndStop">gotoAndStop</button>
+<button id="changeFPS">Change FPS</button>
+<script src="../src/cssSprite.js"></script>
+<script>
+    var images = [];
+    var sprite;
+    var currentFps = 12;
+    var queue = new createjs.LoadQueue(false);
+    var manifest = [
+        {id:1,src:'../images/zhaoyun/run_1.png'},
+        {id:2,src:'../images/zhaoyun/run_2.png'},
+        {id:3,src:'../images/zhaoyun/run_3.png'},
+        {id:4,src:'../images/zhaoyun/run_4.png'},
+        {id:5,src:'../images/zhaoyun/run_5.png'},
+        {id:6,src:'../images/zhaoyun/run_6.png'},
+        {id:7,src:'../images/zhaoyun/run_7.png'},
+        {id:8,src:'../images/zhaoyun/run_8.png'},
+
+        {id:9,src:'../images/zhaoyun/run_9.png'},
+        {id:10,src:'../images/zhaoyun/run_10.png'},
+        {id:11,src:'../images/zhaoyun/run_11.png'},
+        {id:12,src:'../images/zhaoyun/run_12.png'},
+        {id:13,src:'../images/zhaoyun/run_13.png'},
+        {id:14,src:'../images/zhaoyun/run_14.png'},
+        {id:15,src:'../images/zhaoyun/run_15.png'},
+        {id:16,src:'../images/zhaoyun/run_16.png'},
+    ]
+    queue.loadManifest(manifest);
+    queue.on("fileload", function (evt) {
+        images.push(evt.result);
+    });
+
+    queue.on('complete',function (evt) {
+        //console.info(images)
+        createSprite();
+    });
+
+    function createSprite() {
+        sprite = new CssSprite({
+            target:'.animation',
+            fps:currentFps,
+            paused: false,
+            images:images,
+            animations: {
+                runRight: [0,1,2,3,4,5,6,7],
+                runLeft: [8,9,10,11,12,13,14,15]
+            },
+            animationend: function(){
+                console.log('animation End');
+            },
+            change:function (currentFrame) {
+                //console.info(currentFrame);
+            }
+        });
+    }
+
+
+
+
+    document.getElementById('left').addEventListener('click',function (ev) {
+        sprite.play('runLeft');
+    },false)
+
+    document.getElementById('right').addEventListener('click',function (ev) {
+        sprite.play('runRight');
+    },false)
+
+    document.getElementById('play').addEventListener('click',function (ev) {
+        sprite.play();
+    },false)
+
+    document.getElementById('stop').addEventListener('click',function (ev) {
+        sprite.stop();
+    },false)
+
+    document.getElementById('gotoAndPlay').addEventListener('click',function (ev) {
+        //console.info('gotoAndPlay');
+        sprite.gotoAndPlay(0);
+    },false)
+
+    document.getElementById('gotoAndStop').addEventListener('click',function (ev) {
+        //console.info('gotoAndStop');
+        sprite.gotoAndStop('runLeft');
+    },false)
+
+    document.getElementById('changeFPS').addEventListener('click',function (ev) {
+        currentFps = (currentFps === 60) ? 12 : 60;
+        sprite.fps(currentFps);
+    },false)
+
+</script>
+</body>
+</html>

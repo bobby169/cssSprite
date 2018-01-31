@@ -1,0 +1,70 @@
+html,body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    background:#a45f40 url(../bg.png) no-repeat;
+    background-size: contain;
+    position: relative;
+}
+
+.winterpig{
+    position: absolute;
+    width: 100%;
+    height: 600px;
+    top:350px;
+    left:0;
+}
+
+.winterpig .hunger{
+    background: url(../winterpig_hunger.png) no-repeat;
+    width: 336px;
+    height: 429px;
+    position: absolute;
+    bottom: 0;
+    left: 200px;
+}
+
+.winterpig .eat{
+    background: url(../winterpig_eat.png) no-repeat;
+    width: 336px;
+    height: 431px;
+    position: absolute;
+    bottom: 0;
+    left: 200px;
+    display: none;
+}
+
+.winterpig .full{
+    background: url(../winterpig_full.png) no-repeat;
+    width: 335px;
+    height: 430px;
+    position: absolute;
+    bottom: 0;
+    left: 200px;
+    display: none;
+}
+
+.feed{
+    background: url(../feed.png);
+    width: 100px;
+    height: 101px;
+    position: absolute;
+    bottom: 70px;
+    left: 70px;
+}
+
+.feed .star{
+    background: url( ../star.png) no-repeat;
+    width: 118px;
+    height: 92px;
+}
+
+.feed .txt{
+    font-size: 24px;
+    color: #fff;
+    text-align: center;
+}

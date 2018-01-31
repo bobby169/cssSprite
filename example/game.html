@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>game</title>
+    <style>
+        .bg{
+            background: url(../images/background.jpg) no-repeat;
+            width: 640px;
+            height: 480px;
+        }
+
+        .animation {
+            position: absolute;
+            background: url(../images/zhaoyun.png);
+            width: 80px;
+            height: 83px;
+        }
+    </style>
+</head>
+<body>
+<div class="bg">
+    <div class="animation"></div>
+</div>
+<script src="../src/cssSprite.js"></script>
+<script>
+    var currentFps = 12;
+
+    var sprite = new CssSprite({
+        target:'.animation',
+        fps:currentFps,
+        paused: false,
+        //frames: [[82,0,80,83],[164,255,79,83],[82,340,80,83],[0,85,80,83],[82,425,80,83],[164,85,79,83],[82,255,80,83],[0,425,80,83],[164,0,79,83],[0,0,80,83],[0,170,80,83],[0,255,80,83],[164,170,79,83],[0,340,80,83],[82,85,80,83],[82,170,80,83]],
+        frames: [[82,0],[164,255],[82,340],[0,85],[82,425],[164,85],[82,255],[0,425],[164,0],[0,0],[0,170],[0,255],[164,170],[0,340],[82,85],[82,170]],
+        animations: {
+            runRight: [0,8,9,10,11,12,13,14],
+            runLeft: [15,1,2,3,4,5,6,7]
+        },
+        animationend: function(){
+            console.log('animation End');
+        },
+        change:function (currentFrame,frameIndex) {
+            //console.info('currentFrame='+currentFrame,'frameIndex='+frameIndex);
+        }
+    });
+
+    sprite.gotoAndStop('runRight');
+    sprite.target.style.top = '300px';
+    sprite.target.style.left = '300px';
+
+    document.onkeydown = function (ev) {
+        //console.info(ev.keyCode);
+        var name = sprite.currentAnimationName;
+        if(ev.keyCode === 39){
+            var left = Number(sprite.target.style.left.replace('px',''));
+            left += 8;
+            if(name != 'runRight'){
+                sprite.gotoAndStop('runRight');
+            }
+            sprite.target.style.left = left + 'px';
+            move();
+
+        }else if(ev.keyCode === 37){
+            var left = Number(sprite.target.style.left.replace('px',''));
+            left -= 8;
+            if(name != 'runLeft'){
+                sprite.gotoAndStop('runLeft');
+            }
+            sprite.target.style.left = left + 'px';
+            move();
+
+        }else if(ev.keyCode === 38){
+            var top = Number(sprite.target.style.top.replace('px',''));
+            top -= 8;
+            sprite.target.style.top = top + 'px';
+            move();
+        }else if(ev.keyCode === 40){
+            var top = Number(sprite.target.style.top.replace('px',''));
+            top += 8;
+            sprite.target.style.top = top + 'px';
+            move();
+        }
+    }
+
+    function move() {
+        sprite.frameIndex++;//直接赋值，不要担心frameIndex超过totalIndex，如果大于totalIndex会把frameIndex更新为0
+
+        //注意不要直接用sprite.gotoAndStop(sprite.frameIndex++)，如果对frameIndex赋值后，请重新获取一次sprite.frameIndex
+        sprite.gotoAndStop(sprite.frameIndex);
+    }
+
+</script>
+</body>
+</html>
