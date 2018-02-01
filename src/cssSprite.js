@@ -23,17 +23,17 @@
     }
 
     /**
-     * CssSprite，方便对逐桢动画（连续的sprite图片）在DOM中进行渲染，控制动画播放。
+     * CssSprite，方便对逐帧动画（连续的sprite图片）在DOM中进行渲染，控制动画播放。
      * 实现了createjs.Sprite与createjs.SpriteSheet的API，createjs粉
      *
      * @options.target:String 元素的id或class
      * @options.images:Array/String，可选
-     * @options.frames:Object/Array，可选，自定义每桢的X，Y，宽，高，spacing，margin
+     * @options.frames:Object/Array，可选，自定义每帧的X，Y，宽，高，spacing，margin
      * @options.animations:Object，可选，定义相关动作
-     * @options.fps:Int，可选，动画每杪播放桢数，推荐24-60
+     * @options.fps:Int，可选，动画每杪播放帧数，推荐24-60
      * @options.duration:Int，可选，动画一次循环总时间
      * @options.paused:Boolean，可选，是否自动播放
-     * @options.change:Function，可选，每桢执行的回调函数
+     * @options.change:Function，可选，每帧执行的回调函数
      * @options.animationend:Function，可选，动画执行完的回调函数
      * @constructor
      */
@@ -257,8 +257,8 @@
             }
         },
         /**
-         * 播放头直接停在某桢，不常用。推荐使用gotoAndStop(frameIndexOrAnimation)方法
-         * @param currentFrame:Number，实际图片每桢的顺序编号
+         * 播放头直接停在某帧，不常用。推荐使用gotoAndStop(frameIndexOrAnimation)方法
+         * @param currentFrame:Number，实际图片每帧的顺序编号
          */
         frame: function (currentFrame) {
             var $target = this.target;
@@ -290,15 +290,15 @@
             }
         },
         /**
-         * 跳到某桢并播放
+         * 跳到某帧并播放
          * @param frameOrAnimation:Number/String
          */
         gotoAndPlay: function (frameIndexOrAnimation) {
             this._goto(frameIndexOrAnimation);
         },
         /**
-         * 跳到某桢停止播放
-         * 如果你不想内部的计时器，如自定义缓动播放某桢，非常有用
+         * 跳到某帧停止播放
+         * 如果你不想内部的计时器，如自定义缓动播放某帧，非常有用
          * @param frameIndexOrAnimation:Number/String
          */
         gotoAndStop: function (frameIndexOrAnimation) {
@@ -333,7 +333,7 @@
             clearTimeout(this._interval);
         },
         /**
-         * 动态更新桢频,如fps = 10，则每秒播放10桢
+         * 动态更新帧频,如fps = 10，则每秒播放10帧
          * @param fps:Number
          */
         fps: function (fps) {
