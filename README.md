@@ -10,7 +10,7 @@
 ## 示例
 
 - [3d-adidas.html](https://bobby169.github.io/cssSprite/example/3d-adidas.html)
-- [game.html](https://bobby169.github.io/cssSprite/example/3d-adidas.html)
+- [game.html](https://bobby169.github.io/cssSprite/example/game.html)
 - [pig/index.html](https://bobby169.github.io/cssSprite/example/pig/index.html)
 - [render-background-position.html](https://bobby169.github.io/cssSprite/example/render-background-position.html)
 - [render-background-position2.html](https://bobby169.github.io/cssSprite/example/render-background-position2.html)
