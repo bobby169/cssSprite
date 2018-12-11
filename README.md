@@ -7,6 +7,16 @@
 
 > CssSprite功能强大，（因为实现了createjs.Sprite API，偷笑）支持三种渲染模式，background-position（sprite图片），background-image（单独图片），img标签（单独图片）。并支持AdobeAn影片剪辑导出Sprite Sheet，在导出时请将Data format设置为easeljs，把导出的js文件中的frames设为CssSprite参数的frames即可。具体用法请参考example中的示例。
 
+## 示例
+
+- [3d-adidas.html](https://bobby169.github.io/cssSprite/example/3d-adidas.html)
+- [game.html](https://bobby169.github.io/cssSprite/example/3d-adidas.html)
+- [pig/index.html](https://bobby169.github.io/cssSprite/example/pig/index.html)
+- [render-background-position.html](https://bobby169.github.io/cssSprite/example/render-background-position.html)
+- [render-background-position2.html](https://bobby169.github.io/cssSprite/example/render-background-position2.html)
+- [render-base64.html](https://bobby169.github.io/cssSprite/example/render-base64.html)
+- [render-img.html](https://bobby169.github.io/cssSprite/example/render-img.html)
+
 
 ## API参考
 
