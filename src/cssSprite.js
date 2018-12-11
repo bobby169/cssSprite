@@ -5,22 +5,12 @@
  * (c) bobby169
  */
 
-(function (root) {
-
-    if (typeof define === 'function' && define.amd) {
-        // AMD
-        define([], function () {
-            return CssSprite;
-        });
-    } else if (typeof module !== 'undefined' && typeof exports === 'object') {
-        // Node.js
-        module.exports = CssSprite;
-    } else if (root !== undefined) {
-        // Global variable
-        root.CssSprite = CssSprite;
-        root.hb = root.hb || {};
-        root.hb.CssSprite = CssSprite;
-    }
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+        typeof define === 'function' && define.amd ? define(factory) :
+            (global.CssSprite = factory());
+}(this, (function () {
+    'use strict';
 
     /**
      * CssSprite，方便对逐帧动画（连续的sprite图片）在DOM中进行渲染，控制动画播放。
@@ -73,9 +63,9 @@
 
         if (Array.isArray(this.options.images) && this.options.images.length) {
             this.totalFrames = this.options.images.length;
-            this.options.images.forEach(function (img,index) {
+            this.options.images.forEach(function (img, index) {
                 if (img.tagName && img.tagName === 'IMG') {
-                    if(index !== 0){
+                    if (index !== 0) {
                         img.style.display = 'none';
                     }
                     _this.target.appendChild(img);
@@ -126,7 +116,7 @@
                     y += frameHeight + spacing;
                 }
 
-                if(this.totalFrames === undefined){
+                if (this.totalFrames === undefined) {
                     _this.totalFrames = frameCount;
                 }
 
@@ -143,7 +133,7 @@
 
     }
 
-    CssSprite.prototype = {
+    Object.assign(CssSprite.prototype, {
         _getCss: function (element, property) {
             var camelize = function (str) {
                 return str.replace(/-+(.)?/g, function (match, chr) {
@@ -182,11 +172,11 @@
             var checkLoop = function (frameIndex, finalFrame) {
                 frameIndex++;
                 if (frameIndex >= finalFrame) {
-                    if(this.currentAnimation && this.currentAnimation.next){
+                    if (this.currentAnimation && this.currentAnimation.next) {
                         frameIndex = 0;
                         this.currentAnimation = this.options.animations[this.currentAnimation.next];
                         this._tick();
-                    }else {
+                    } else {
                         if (typeof this.options.animationend === 'function') {
                             this.options.animationend.call(this);
                         }
@@ -208,11 +198,11 @@
                     }
                 }
 
-                if(Array.isArray(this.currentAnimation)){
+                if (Array.isArray(this.currentAnimation)) {
                     this.frame(this.currentAnimation[this._frameIndex]);
                     this._frameIndex = checkLoop.call(this, this._frameIndex, this.currentAnimation.length);
-                }else {
-                    if(this.currentAnimation.frames && this.currentAnimation.frames.length){
+                } else {
+                    if (this.currentAnimation.frames && this.currentAnimation.frames.length) {
                         this.frame(this.currentAnimation.frames[this._frameIndex]);
                         this._frameIndex = checkLoop.call(this, this._frameIndex, this.currentAnimation.frames.length);
                     }
@@ -224,7 +214,7 @@
             var _this = this;
             var speed = 1000 / this.options.fps;
 
-            if(this.currentAnimation && this.currentAnimation.speed){
+            if (this.currentAnimation && this.currentAnimation.speed) {
                 speed = speed / this.currentAnimation.speed;
             }
 
@@ -233,7 +223,7 @@
             }
 
             //清除this._interval，防止重复_tick
-            if(this._interval) clearTimeout(this._interval);
+            if (this._interval) clearTimeout(this._interval);
 
             this._interval = setTimeout(function () {
                 _this._animation();
@@ -251,7 +241,7 @@
             } else if (typeof frameIndexOrAnimation === 'number') {
                 this._frameIndex = frameIndexOrAnimation;
                 this._tick();
-            } else if (frameIndexOrAnimation === undefined){
+            } else if (frameIndexOrAnimation === undefined) {
                 this._frameIndex = 0;
                 this._tick();
             }
@@ -339,7 +329,7 @@
         fps: function (fps) {
             this.options.fps = fps;
         }
-    }
+    })
 
     /**
      * 可以直接读写frameIndex属性，比如
@@ -360,13 +350,16 @@
      * @param end:Int
      * @returns {Array}
      */
-    CssSprite.createAnimations = function(begin,end) {
+    CssSprite.createAnimations = function (begin, end) {
         var arr = [];
-        while (end - begin >=0){
+        while (end - begin >= 0) {
             arr.push(begin);
-            begin ++;
+            begin++;
         }
         return arr;
     }
 
-})(this);
+    return CssSprite;
+
+})));
+
