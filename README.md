@@ -17,6 +17,11 @@
 - [render-base64.html](https://bobby169.github.io/cssSprite/example/render-base64.html)
 - [render-img.html](https://bobby169.github.io/cssSprite/example/render-img.html)
 
+## Webpack
+
+```javascript
+import {CssSprite} from 'cssSprite'
+```
 
 ## API参考
 
@@ -89,7 +94,7 @@
 ## 示例说明
 
 ##### frames参数
-```js
+```javascript
 //frames定义为object对象,没有createjs.SpriteSheet的regX和regY
 frames: {width:64, height:64, count:20, spacing:0, margin:0}
 
@@ -102,7 +107,7 @@ frames: [[82,0],[164,255],[82,340],[0,85],[82,425]
 ```
 
 ##### animations参数
-```js
+```javascript
 //动画名后面直接是数组
 //注意不支持createjs.SpriteSheep用数组来定义start, end, next, speed。
 //每一帧要单独定义，如果是连续的自然数索引，推荐用CssSprite.createAnimations(0,length-1）方法
@@ -136,7 +141,7 @@ animations:{
 ```
 
 ##### frameIndex实例属性
-```js
+```javascript
 var sprite = new CssSprite({target:'.sprite'});
 
 function move() {
@@ -152,7 +157,7 @@ function move() {
 
 > 如果你的动画是先快后慢这样的缓动需求，可以直接跳过系统内部的定时器。根据自己需求灵活运用gotoAndStop可以动态播放每帧。如可以用[AlloyTouch](https://github.com/AlloyTeam/AlloyTouch)结合来播放动画
 
-```js
+```javascript
 var sprite = new CssSprite({target:'.sprite'});
 
 var num = {frameIndex:0};

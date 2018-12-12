@@ -10,7 +10,8 @@
   "main": "src/cssSprite.js",
   "keywords": [
     "sprite",
-    "cssSprite"
+    "cssSprite",
+    "spritesheet"
   ],
   "dependencies": {
   },
