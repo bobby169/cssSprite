@@ -14,7 +14,7 @@
 <body>
 <h3>用鼠标横向拖动旋转3D鞋子</h3>
 <div class="animation animation-2"></div>
-<script src="../src/cssSprite.js"></script>
+<script src="../dist/cssSprite.min.js"></script>
 <script>
     var images = [];
     var sprite;
@@ -51,6 +51,7 @@
             //duration:10000,
             paused: false,
             images:images,
+            loop:3,
             animationend: function(){
                 console.log('animation End');
                 document.querySelector('.animation').querySelectorAll('img').forEach(function (value) {

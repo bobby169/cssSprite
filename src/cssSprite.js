@@ -24,6 +24,7 @@
      * @options.duration:Int，可选，动画一次循环总时间
      * @options.frameIndex:Int，可选，动画初始帧位置
      * @options.paused:Boolean，可选，是否自动播放
+     * @options.loop:Number，可选，动画循环次数
      * @options.change:Function，可选，每帧执行的回调函数
      * @options.animationend:Function，可选，动画执行完的回调函数
      * @constructor
@@ -38,6 +39,7 @@
             fps: 30,
             paused: false,
             frameIndex: 0,
+            loop: -1,
             change: false,
             animationend: false
         }, options);
@@ -58,7 +60,23 @@
         this._frames = [];
         this._spacing = 0;
         this._margin = 0;
+        this._loopIndex = 0;
         this.currentFrame = 0;
+        if (!this.options.frames) {
+            this.options.frames = Object.create(null);
+        }
+
+        if (this.options.loop === 0) {
+            this.options.paused = true;
+        }
+
+        if (this.options.frames.width) {
+            this.target.style.width = this.options.frames.width + 'px';
+        }
+
+        if (this.options.frames.height) {
+            this.target.style.height = this.options.frames.height + 'px';
+        }
 
         if (isObject(this.options.frames) && !this.options.frames.width) {
             this.options.frames.width = this.target.clientWidth;
@@ -95,7 +113,7 @@
             if (!_this.options.paused) {
                 _this._tick();
             }
-        } else if (this.options.frames.width && this.options.frames.height) {
+        } else if (this.options.frames.width !== null && this.options.frames.height !== null) {
             this._frameWidth = this.options.frames.width;
             this._frameHeight = this.options.frames.height;
             this._spacing = this.options.spacing || 0;
@@ -181,6 +199,13 @@
                     if (this.currentAnimation && this.currentAnimation.next) {
                         frameIndex = 0;
                         this.currentAnimation = this.options.animations[this.currentAnimation.next];
+                        this._tick()
+                    } else if (this.options.loop === -1) {
+                        frameIndex = 0;
+                        this._tick();
+                    } else if (this.options.loop > 0 && this._loopIndex < this.options.loop - 1) {
+                        frameIndex = 0;
+                        this._loopIndex++;
                         this._tick();
                     } else {
                         if (typeof this.options.animationend === 'function') {
@@ -190,6 +215,7 @@
                 } else {
                     this._tick();
                 }
+
                 return frameIndex;
             };
 
@@ -237,6 +263,7 @@
         },
         _goto: function (frameIndexOrAnimation) {
             this.stop();
+            this._loopIndex = 0;
             if (typeof frameIndexOrAnimation === 'string') {
                 if (this.options.animations[frameIndexOrAnimation] !== this.currentAnimation) {
                     this._frameIndex = 0;

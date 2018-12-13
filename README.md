@@ -45,6 +45,8 @@ import {CssSprite} from 'cssSprite'
 
 ###### @options.paused:Boolean，可选，是否自动播放
 
+###### @options.loop:Number，可选，动画循环次数
+
 ###### @options.change:Function，可选，每帧执行的回调函数
 
 ###### @options.animationend:Function，可选，动画执行完的回调函数
