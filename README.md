@@ -41,6 +41,8 @@ import {CssSprite} from 'cssSprite'
 
 ###### @options.duration:Int，可选，动画一次循环总时间
 
+###### @options.frameIndex:Int，可选，动画初始帧位置
+
 ###### @options.paused:Boolean，可选，是否自动播放
 
 ###### @options.change:Function，可选，每帧执行的回调函数
