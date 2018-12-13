@@ -23,6 +23,10 @@
 import {CssSprite} from 'cssSprite'
 ```
 
+## vue-css-sprite
+
+见src/vue-css-sprite
+
 ## API参考
 
 ##### 构造函数
