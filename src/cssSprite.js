@@ -22,6 +22,7 @@
      * @options.animations:Object，可选，定义相关动作
      * @options.fps:Int，可选，动画每杪播放帧数，推荐24-60
      * @options.duration:Int，可选，动画一次循环总时间
+     * @options.frameIndex:Int，可选，动画初始帧位置
      * @options.paused:Boolean，可选，是否自动播放
      * @options.change:Function，可选，每帧执行的回调函数
      * @options.animationend:Function，可选，动画执行完的回调函数
@@ -36,23 +37,28 @@
             animations: null,
             fps: 30,
             paused: false,
+            frameIndex: 0,
             change: false,
             animationend: false
         }, options);
 
-        this.target = document.querySelector(this.options.target);
+        var isElement = function (obj) {
+            return !!(obj && obj.nodeType === 1);
+        }
+
+        var isObject = function (source) {
+            return 'function' == typeof source || !!(source && 'object' == typeof source);
+        };
+
+        this.target = isElement(this.options.target) ? this.options.target : document.querySelector(this.options.target);
         this.renderType = 'backgroundPosition';
-        this._frameIndex = 0;
+        this._frameIndex = this.options.frameIndex;
         this._frameWidth = 0;
         this._frameHeight = 0;
         this._frames = [];
         this._spacing = 0;
         this._margin = 0;
         this.currentFrame = 0;
-
-        var isObject = function (source) {
-            return 'function' == typeof source || !!(source && 'object' == typeof source);
-        };
 
         if (isObject(this.options.frames) && !this.options.frames.width) {
             this.options.frames.width = this.target.clientWidth;
@@ -116,7 +122,7 @@
                     y += frameHeight + spacing;
                 }
 
-                if (this.totalFrames === undefined) {
+                if (_this.totalFrames === undefined) {
                     _this.totalFrames = frameCount;
                 }
 
