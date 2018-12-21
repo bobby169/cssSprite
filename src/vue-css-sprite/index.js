@@ -1,3 +1,1 @@
-import CssSprite from './css-sprite.vue'
-
-export default CssSprite
+export { default } from './css-sprite.vue'

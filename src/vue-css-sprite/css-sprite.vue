@@ -6,7 +6,7 @@
   import CssSprite from './cssSprite'
 
   export default {
-    name: 'css-sprite',
+    name: 'CssSprite',
     componentName: 'CssSprite',
     props: {
       images: [String, Array],
@@ -94,6 +94,9 @@
       },
       'frameIndex'(val) {
         this.cssSprite.frameIndex = val
+      },
+      'paused'(val) {
+        this.cssSprite.paused = val
       }
     },
     mounted() {

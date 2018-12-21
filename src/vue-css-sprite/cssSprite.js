@@ -2,7 +2,7 @@
  * DATE: 2018-01-25
  * @author: hebo
  * 115393304
- * (c) bobby169
+ * (c) iqianjin.com
  */
 
 /**
@@ -37,6 +37,8 @@ class CssSprite {
       animationend: false
     }, options)
 
+    console.info(this.options)
+
     const isElement = (obj) => {
       return !!(obj && obj.nodeType === 1)
     }
@@ -55,20 +57,27 @@ class CssSprite {
     this._margin = 0
     this._loopIndex = 0
     this.currentFrame = 0
+    this._paused = this.options.paused
     if (!this.options.frames) {
       this.options.frames = Object.create(null)
     }
 
     if (this.options.loop === 0) {
-      this.options.paused = true
+      this._paused = true
     }
 
     if (this.options.frames.width) {
+      this.options.frames.width = Number(this.options.frames.width)
       this.target.style.width = `${this.options.frames.width}px`
     }
 
     if (this.options.frames.height) {
+      this.options.frames.height = Number(this.options.frames.height)
       this.target.style.height = `${this.options.frames.height}px`
+    }
+
+    if (this.options.frames.count) {
+      this.options.frames.count = Number(this.options.frames.count)
     }
 
     if (isObject(this.options.frames) && !this.options.frames.width) {
@@ -91,7 +100,7 @@ class CssSprite {
           this.renderType = 'backgroundImage'
         }
       })
-      if (!this.options.paused) {
+      if (!this._paused) {
         this._tick()
       }
     } else if (Array.isArray(this.options.frames) && this.options.frames.length) {
@@ -103,7 +112,7 @@ class CssSprite {
         let frameHeight = this.options.frames[i][3] ? this.options.frames[i][3] : this.target.clientHeight
         this._frames.push({x: x, y: y, width: frameWidth, height: frameHeight})
       }
-      if (!this.options.paused) {
+      if (!this._paused) {
         this._tick()
       }
     } else if (this.options.frames.width !== null && this.options.frames.height !== null) {
@@ -144,12 +153,12 @@ class CssSprite {
           this.totalFrames = frameCount
         }
 
-        if (!this.options.paused) {
+        if (!this._paused) {
           this._tick()
         }
       })
     } else {
-      if (!this.options.paused) {
+      if (!this._paused) {
         this._tick()
       }
     }
@@ -364,6 +373,15 @@ class CssSprite {
     clearTimeout(this._interval)
   }
 
+  _setPaused(val) {
+    this._paused = val
+    if (this._paused) {
+      this.stop()
+    } else {
+      this.play()
+    }
+  }
+
   /**
    * 动态更新帧频,如fps = 10，则每秒播放10帧
    * @param fps:Number
@@ -381,7 +399,8 @@ class CssSprite {
  */
 try {
   Object.defineProperties(CssSprite.prototype, {
-    frameIndex: {set: CssSprite.prototype._setFrameIndex, get: CssSprite.prototype._getFrameIndex}
+    frameIndex: {set: CssSprite.prototype._setFrameIndex, get: CssSprite.prototype._getFrameIndex},
+    paused: {set: CssSprite.prototype._setPaused, get: CssSprite.prototype._paused}
   })
 } catch (e) {
 }
