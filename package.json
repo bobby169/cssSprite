@@ -14,9 +14,22 @@
     "spritesheet"
   ],
   "dependencies": {
+    "i": "^0.3.6",
+    "rollup": "^1.6.0",
+    "rollup-plugin-uglify": "^6.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@vue/cli-plugin-babel": "^3.0.1",
+    "@vue/cli-plugin-eslint": "^3.0.1",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "rollup-plugin-babel": "^4.3.2"
   },
   "scripts": {
+    "build": "rollup --config rollup.config.js"
   }
 }

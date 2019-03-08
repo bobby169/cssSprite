@@ -2,12 +2,13 @@
  * DATE: 2018-01-25
  * @author: hebo
  * 115393304
- * (c) iqianjin.com
+ * (c) bobby169
+ * https://github.com/bobby169/cssSprite
  */
 
 /**
  * CssSprite，方便对逐帧动画（连续的sprite图片）在DOM中进行渲染，控制动画播放。
- * 实现了createjs.Sprite与createjs.SpriteSheet的API，createjs粉
+ * 实现了createjs.Sprite与createjs.SpriteSheet的API
  *
  * @options.target:String 元素的id或class
  * @options.images:Array/String，可选
@@ -22,8 +23,8 @@
  * @options.animationend:Function，可选，动画执行完的回调函数
  * @constructor
  */
-class CssSprite {
-  constructor(options = {}) {
+export default class CssSprite {
+  constructor (options = {}) {
     this.options = Object.assign({
       target: 'body',
       images: null,
@@ -38,7 +39,10 @@ class CssSprite {
     }, options)
 
     console.info(this.options)
+    this._initialize()
+  }
 
+  _initialize () {
     const isElement = (obj) => {
       return !!(obj && obj.nodeType === 1)
     }
@@ -89,7 +93,7 @@ class CssSprite {
 
     if (Array.isArray(this.options.images) && this.options.images.length) {
       this.totalFrames = this.options.images.length
-      this.options.images.forEach(function (img, index) {
+      this.options.images.forEach((img, index) => {
         if (img.tagName && img.tagName === 'IMG') {
           if (index !== 0) {
             img.style.display = 'none'
@@ -100,9 +104,7 @@ class CssSprite {
           this.renderType = 'backgroundImage'
         }
       })
-      if (!this._paused) {
-        this._tick()
-      }
+      this._toTick()
     } else if (Array.isArray(this.options.frames) && this.options.frames.length) {
       this.totalFrames = this.options.frames.length
       for (let i = 0; i < this.totalFrames; i++) {
@@ -110,11 +112,9 @@ class CssSprite {
         let y = this.options.frames[i][1]
         let frameWidth = this.options.frames[i][2] ? this.options.frames[i][2] : this.target.clientWidth
         let frameHeight = this.options.frames[i][3] ? this.options.frames[i][3] : this.target.clientHeight
-        this._frames.push({x: x, y: y, width: frameWidth, height: frameHeight})
+        this._frames.push({ x: x, y: y, width: frameWidth, height: frameHeight })
       }
-      if (!this._paused) {
-        this._tick()
-      }
+      this._toTick()
     } else if (this.options.frames.width !== null && this.options.frames.height !== null) {
       this._frameWidth = this.options.frames.width
       this._frameHeight = this.options.frames.height
@@ -143,7 +143,7 @@ class CssSprite {
               break
             }
             frameCount++
-            this._frames.push({x: x, y: y, width: frameWidth, height: frameHeight})
+            this._frames.push({ x: x, y: y, width: frameWidth, height: frameHeight })
             x += frameWidth + spacing
           }
           y += frameHeight + spacing
@@ -153,18 +153,20 @@ class CssSprite {
           this.totalFrames = frameCount
         }
 
-        if (!this._paused) {
-          this._tick()
-        }
+        this._toTick()
       })
-    } else {
-      if (!this._paused) {
-        this._tick()
-      }
     }
   }
 
-  _getCss(element, property) {
+  _toTick () {
+    if (this._paused) {
+      this.frame(0)
+    } else {
+      this._tick()
+    }
+  }
+
+  _getCss (element, property) {
     let camelize = function (str) {
       return str.replace(/-+(.)?/g, function (match, chr) {
         return chr ? chr.toUpperCase() : ''
@@ -173,7 +175,7 @@ class CssSprite {
     return element.style[camelize(property)] || getComputedStyle(element, '').getPropertyValue(property)
   }
 
-  _loadImage(callback) {
+  _loadImage (callback) {
     let imageSrc
     if (typeof this.options.images === 'string') {
       imageSrc = this.options.images
@@ -191,46 +193,46 @@ class CssSprite {
     image.src = imageSrc
   }
 
-  _getFrameIndex() {
+  _getFrameIndex () {
     return this._frameIndex
   }
 
-  _setFrameIndex(frameIndex) {
+  _setFrameIndex (frameIndex) {
     let total = this.options.animations ? this.currentAnimation.length : this.totalFrames
     frameIndex = frameIndex > total - 1 ? 0 : frameIndex
     frameIndex = frameIndex < 0 ? total - 1 : frameIndex
     this._frameIndex = frameIndex
   }
 
-  _animation() {
-    let checkLoop = function (frameIndex, finalFrame) {
-      frameIndex++
-      if (frameIndex >= finalFrame) {
-        if (this.currentAnimation && this.currentAnimation.next) {
-          frameIndex = 0
-          this.currentAnimation = this.options.animations[this.currentAnimation.next]
-          this._tick()
-        } else if (this.options.loop === -1) {
-          frameIndex = 0
-          this._tick()
-        } else if (this.options.loop > 0 && this._loopIndex < this.options.loop - 1) {
-          frameIndex = 0
-          this._loopIndex++
-          this._tick()
-        } else {
-          if (typeof this.options.animationend === 'function') {
-            this.options.animationend.call(this)
-          }
-        }
-      } else {
+  _checkLoop (frameIndex, finalFrame) {
+    frameIndex++
+    if (frameIndex >= finalFrame) {
+      if (this.currentAnimation && this.currentAnimation.next) {
+        frameIndex = 0
+        this.currentAnimation = this.options.animations[this.currentAnimation.next]
         this._tick()
+      } else if (this.options.loop === -1) {
+        frameIndex = 0
+        this._tick()
+      } else if (this.options.loop > 0 && this._loopIndex < this.options.loop - 1) {
+        frameIndex = 0
+        this._loopIndex++
+        this._tick()
+      } else {
+        if (typeof this.options.animationend === 'function') {
+          this.options.animationend.call(this)
+        }
       }
-      return frameIndex
+    } else {
+      this._tick()
     }
+    return frameIndex
+  }
 
+  _animation () {
     if (!this.options.animations) {
       this.frame(this._frameIndex)
-      this._frameIndex = checkLoop.call(this, this._frameIndex, this.totalFrames)
+      this._frameIndex = this._checkLoop(this._frameIndex, this.totalFrames)
     } else {
       if (this.currentAnimation === undefined) {
         for (let k in this.options.animations) {
@@ -241,17 +243,17 @@ class CssSprite {
 
       if (Array.isArray(this.currentAnimation)) {
         this.frame(this.currentAnimation[this._frameIndex])
-        this._frameIndex = checkLoop.call(this, this._frameIndex, this.currentAnimation.length)
+        this._frameIndex = this._checkLoop(this._frameIndex, this.currentAnimation.length)
       } else {
         if (this.currentAnimation.frames && this.currentAnimation.frames.length) {
           this.frame(this.currentAnimation.frames[this._frameIndex])
-          this._frameIndex = checkLoop.call(this, this._frameIndex, this.currentAnimation.frames.length)
+          this._frameIndex = this._checkLoop(this._frameIndex, this.currentAnimation.frames.length)
         }
       }
     }
   }
 
-  _tick() {
+  _tick () {
     let speed = 1000 / this.options.fps
 
     if (this.currentAnimation && this.currentAnimation.speed) {
@@ -270,7 +272,7 @@ class CssSprite {
     }, speed)
   }
 
-  _goto(frameIndexOrAnimation) {
+  _goto (frameIndexOrAnimation) {
     this.stop()
     this._loopIndex = 0
     if (typeof frameIndexOrAnimation === 'string') {
@@ -289,11 +291,20 @@ class CssSprite {
     }
   }
 
+  _setPaused (val) {
+    this._paused = val
+    if (this._paused) {
+      this.stop()
+    } else {
+      this.play()
+    }
+  }
+
   /**
    * 播放头直接停在某帧，不常用。推荐使用gotoAndStop(frameIndexOrAnimation)方法
    * @param currentFrame:Number，实际图片每帧的顺序编号
    */
-  frame(currentFrame) {
+  frame (currentFrame) {
     let $target = this.target
     if (typeof currentFrame === 'undefined' || isNaN(currentFrame)) {
       currentFrame = this.currentFrame
@@ -330,7 +341,7 @@ class CssSprite {
    * 跳到某帧并播放
    * @param frameOrAnimation:Number/String
    */
-  gotoAndPlay(frameIndexOrAnimation) {
+  gotoAndPlay (frameIndexOrAnimation) {
     this._goto(frameIndexOrAnimation)
   }
 
@@ -339,7 +350,7 @@ class CssSprite {
    * 如果你不想内部的计时器，如自定义缓动播放某帧，非常有用
    * @param frameIndexOrAnimation:Number/String
    */
-  gotoAndStop(frameIndexOrAnimation) {
+  gotoAndStop (frameIndexOrAnimation) {
     this.stop()
     if (typeof frameIndexOrAnimation === 'undefined') {
       frameIndexOrAnimation = this._frameIndex
@@ -362,31 +373,22 @@ class CssSprite {
    * 和gotoAndPlay一样，这个更多的是不传参数，恢复播放功能
    * @param frameOrAnimation
    */
-  play(frameIndexOrAnimation) {
+  play (frameIndexOrAnimation) {
     this._goto(frameIndexOrAnimation)
   }
 
   /**
    * 停止播放
    */
-  stop() {
+  stop () {
     clearTimeout(this._interval)
-  }
-
-  _setPaused(val) {
-    this._paused = val
-    if (this._paused) {
-      this.stop()
-    } else {
-      this.play()
-    }
   }
 
   /**
    * 动态更新帧频,如fps = 10，则每秒播放10帧
    * @param fps:Number
    */
-  fps(fps) {
+  fps (fps) {
     this.options.fps = fps
   }
 }
@@ -399,8 +401,8 @@ class CssSprite {
  */
 try {
   Object.defineProperties(CssSprite.prototype, {
-    frameIndex: {set: CssSprite.prototype._setFrameIndex, get: CssSprite.prototype._getFrameIndex},
-    paused: {set: CssSprite.prototype._setPaused, get: CssSprite.prototype._paused}
+    frameIndex: { set: CssSprite.prototype._setFrameIndex, get: CssSprite.prototype._getFrameIndex },
+    paused: { set: CssSprite.prototype._setPaused, get: CssSprite.prototype._paused }
   })
 } catch (e) {
 }
@@ -419,5 +421,3 @@ CssSprite.createAnimations = function (begin, end) {
   }
   return arr
 }
-
-export default CssSprite

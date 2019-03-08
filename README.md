@@ -17,10 +17,10 @@
 - [render-base64.html](https://bobby169.github.io/cssSprite/example/render-base64.html)
 - [render-img.html](https://bobby169.github.io/cssSprite/example/render-img.html)
 
-## Webpack
+## Build
 
-```javascript
-import {CssSprite} from 'cssSprite'
+```bash
+npm run build
 ```
 
 ## vue-css-sprite
