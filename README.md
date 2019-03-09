@@ -25,7 +25,11 @@ npm run build
 
 ## vue-css-sprite
 
-见src/vue-css-sprite
+见[src/vue-css-sprite](https://github.com/bobby169/cssSprite/tree/master/src/vue-css-sprite)
+
+## react-css-sprite
+
+见[src/react-css-sprite](https://github.com/bobby169/cssSprite/tree/master/src/react-css-sprite)
 
 ## API参考
 

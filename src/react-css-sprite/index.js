@@ -112,6 +112,5 @@ CssSprite.propTypes = {
   frameIndex: PropTypes.number,
   loop: PropTypes.number,
   change: PropTypes.func,
-  animationend: PropTypes.func,
-  haha: PropTypes.func
+  animationend: PropTypes.func
 }
