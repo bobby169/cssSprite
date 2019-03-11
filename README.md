@@ -1,3 +1,6 @@
+# CssSprite
+[![Build Status](https://travis-ci.com/bobby169/cssSprite.svg?branch=master)](https://travis-ci.com/bobby169/cssSprite)
+
 ## 介绍
 > CssSprite，方便对逐帧动画（连续的sprite图片）在DOM中进行渲染，控制动画播放。
 
