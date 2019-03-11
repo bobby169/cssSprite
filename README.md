@@ -5,7 +5,7 @@
 
 > 如果你熟悉createjs.Sprite和createjs.SpriteSheet，可以轻松运用CssSprite，因为两者API极为相似。没有createjs或canvas经验的开发者也可以轻松学习运用CssSprite。
 
-> CssSprite功能强大，（因为实现了createjs.Sprite API，偷笑）支持三种渲染模式，background-position（sprite图片），background-image（单独图片），img标签（单独图片）。并支持AdobeAn影片剪辑导出Sprite Sheet，在导出时请将Data format设置为easeljs，把导出的js文件中的frames设为CssSprite参数的frames即可。具体用法请参考example中的示例。
+> CssSprite功能强大，（因为实现了createjs.Sprite API）支持三种渲染模式，background-position（sprite图片），background-image（单独图片），img标签（单独图片）。并支持AdobeAn影片剪辑导出Sprite Sheet，在导出时请将Data format设置为easeljs，把导出的js文件中的frames设为CssSprite参数的frames即可。具体用法请参考example中的示例。
 
 ## 示例
 

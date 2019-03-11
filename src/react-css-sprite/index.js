@@ -89,7 +89,6 @@ export default class CssSprite extends Component {
         {...others}
         style={{ ...others.style }}
         className={className}
-        // onClick={this.gotoAndPlay}
       />
     )
   }

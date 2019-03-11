@@ -26,10 +26,14 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
+    "eslint-plugin-eslint-plugin": "^2.0.1",
+    "eslint-plugin-jest": "^22.3.0",
     "eslint-plugin-vue": "^5.0.0",
+    "jest": "^24.3.1",
     "rollup-plugin-babel": "^4.3.2"
   },
   "scripts": {
-    "build": "rollup --config rollup.config.js"
+    "build": "npm run test && rollup --config rollup.config.js",
+    "test": "jest"
   }
 }

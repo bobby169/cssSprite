@@ -1,12 +1,36 @@
+const globals = {
+  globals: {
+    afterAll: false,
+    afterEach: false,
+    beforeAll: false,
+    beforeEach: false,
+    describe: false,
+    expect: false,
+    fit: false,
+    it: false,
+    jasmine: false,
+    jest: false,
+    pending: false,
+    pit: false,
+    require: false,
+    test: false,
+    xdescribe: false,
+    xit: false,
+    xtest: false,
+  }
+}
+
 module.exports = {
   root: true,
   env: {
+    'jest/globals': true,
     node: true
   },
-  'extends': [
+  extends: [
     'plugin:vue/essential',
     '@vue/standard'
   ],
+  plugins: ['jest','eslint-plugin'],
   rules: {
     'new-cap': 'off',
     'no-useless-constructor': 'off',
@@ -19,5 +43,11 @@ module.exports = {
   },
   globals: {
     'createjs': true
-  }
+  },
+  overrides: [
+    {
+      files: ['*.test.js'],
+      globals,
+    },
+  ]
 }
