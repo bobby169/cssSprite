@@ -3,6 +3,26 @@ import PropTypes from 'prop-types'
 import Sprite from '../js/cssSprite'
 
 export default class CssSprite extends Component {
+  static defaultProps = {
+    fps: 40,
+    paused: false,
+    frameIndex: 0,
+    loop: -1
+  }
+
+  static propTypes = {
+    images: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    frames: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    fps: PropTypes.number,
+    duration: PropTypes.number,
+    paused: PropTypes.bool,
+    animations: PropTypes.object,
+    frameIndex: PropTypes.number,
+    loop: PropTypes.number,
+    change: PropTypes.func,
+    animationend: PropTypes.func
+  }
+
   constructor (props) {
     super(props)
     this.state = { date: new Date() }
@@ -92,24 +112,4 @@ export default class CssSprite extends Component {
       />
     )
   }
-}
-
-CssSprite.defaultProps = {
-  fps: 30,
-  paused: false,
-  frameIndex: 0,
-  loop: -1
-}
-
-CssSprite.propTypes = {
-  images: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  frames: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  fps: PropTypes.number,
-  duration: PropTypes.number,
-  paused: PropTypes.bool,
-  animations: PropTypes.object,
-  frameIndex: PropTypes.number,
-  loop: PropTypes.number,
-  change: PropTypes.func,
-  animationend: PropTypes.func
 }
