@@ -114,6 +114,9 @@ export default {
       animationend: this.onAnimationend
     }
     this.cssSprite = new CssSprite(options)
+  },
+  destroyed () {
+    this.cssSprite.stop()
   }
 }
 </script>

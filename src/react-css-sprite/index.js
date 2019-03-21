@@ -88,6 +88,10 @@ export default class CssSprite extends Component {
     this.cssSprite = new Sprite(options)
   }
 
+  componentWillUnmount () {
+    this.cssSprite.stop()
+  }
+
   render () {
     const {
       images,
