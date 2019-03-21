@@ -4,7 +4,7 @@ import Sprite from '../js/cssSprite'
 
 export default class CssSprite extends Component {
   static defaultProps = {
-    fps: 40,
+    fps: 30,
     paused: false,
     frameIndex: 0,
     loop: -1
