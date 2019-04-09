@@ -16,7 +16,8 @@
   "dependencies": {
     "i": "^0.3.6",
     "rollup": "^1.6.0",
-    "rollup-plugin-uglify": "^6.0.2"
+    "rollup-plugin-uglify": "^6.0.2",
+    "rollup-plugin-babel": "^4.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -30,8 +31,7 @@
     "eslint-plugin-eslint-plugin": "^2.0.1",
     "eslint-plugin-jest": "^22.3.0",
     "eslint-plugin-vue": "^5.0.0",
-    "jest": "^24.3.1",
-    "rollup-plugin-babel": "^4.3.2"
+    "jest": "^24.3.1"
   },
   "scripts": {
     "build": "npm run test && rollup --config rollup.config.js",

@@ -189,12 +189,12 @@ new AlloyTouch({
 ```
 ## 渲染模式
 
-##### backgroundPosition渲染（推荐）
+##### backgroundPosition渲染
 
 > 你可以先定义sprite元素的背景图片，frame的width，height。CssSprite默认就可以自动计算各个frame的backgroundPosition位置了。如果你的sprite图片不是各个frame都铺满的话，请写上frames.count属性
 
 ##### img标签渲染
-> 如果你用到createjs的preload.js来加载连续图片组合成序列帧动画，因为加载成功后已经生成成了img元素，CssSprite直接用img标签来渲染。
+> 如果你用到createjs的preload.js来加载连续图片组合成序列帧动画，因为加载成功后已经生成成了img元素，CssSprite直接用img标签来渲染。如果图片非常多，用backgroundPosition需要非常大的图片，性能会有非常大的影响。这时可以用img方式做成单张图，可以高效渲染。
 
 ##### backgroundImage渲染
 > 如果序列帧不想做成sprite图片，可以把单个图片直接转成base64，base64加载完后，CssSprite自动判断用backgroundImage直接渲染相应序列帧的base64图片。

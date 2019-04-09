@@ -95,10 +95,13 @@ export default class CssSprite {
       this.totalFrames = this.options.images.length
       this.options.images.forEach((img, index) => {
         if (img.tagName && img.tagName === 'IMG') {
-          if (index !== 0) {
-            img.style.display = 'none'
+          // if (index !== 0) {
+          //   img.style.display = 'none'
+          // }
+          // this.target.appendChild(img)
+          if (index === 0) {
+            this._currentAppendChild = this.target.appendChild(img)
           }
-          this.target.appendChild(img)
           this.renderType = 'img'
         } else {
           this.renderType = 'backgroundImage'
@@ -313,13 +316,17 @@ export default class CssSprite {
     if (this.renderType === 'backgroundImage') {
       $target.style.backgroundImage = this.options.images[currentFrame].img ? `url(${this.options.images[currentFrame].img})` : `url(${this.options.images[currentFrame]})`
     } else if (this.renderType === 'img') {
-      this.options.images.forEach(function (img, index) {
-        if (index === currentFrame) {
-          img.style.display = 'inline-block'
-        } else {
-          img.style.display = 'none'
-        }
-      })
+      // this.options.images.forEach(function (img, index) {
+      //   if (index === currentFrame) {
+      //     img.style.display = 'inline-block'
+      //   } else {
+      //     img.style.display = 'none'
+      //   }
+      // })
+      if (this._currentAppendChild) {
+        $target.removeChild(this._currentAppendChild)
+      }
+      this._currentAppendChild = $target.appendChild(this.options.images[currentFrame])
     } else {
       if (typeof this.options.images === 'string' && this.options.images !== '') {
         $target.style.backgroundImage = `url(${this.options.images})`
