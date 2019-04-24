@@ -8,7 +8,7 @@
 
 > 如果你熟悉createjs.Sprite和createjs.SpriteSheet，可以轻松运用CssSprite，因为两者API极为相似。没有createjs或canvas经验的开发者也可以轻松学习运用CssSprite。
 
-> CssSprite功能强大，（因为实现了createjs.Sprite API）支持三种渲染模式，background-position（sprite图片），background-image（单独图片），img标签（单独图片）。并支持AdobeAn影片剪辑导出Sprite Sheet，在导出时请将Data format设置为easeljs，把导出的js文件中的frames设为CssSprite参数的frames即可。具体用法请参考example中的示例。
+> CssSprite功能强大，（因为实现了createjs.Sprite API）支持三种渲染模式，background-position（sprite图片），background-image（单独图片），img标签（单独图片）。具体用法请参考example中的示例。
 
 ## 示例
 
@@ -198,6 +198,55 @@ new AlloyTouch({
 
 ##### backgroundImage渲染
 > 如果序列帧不想做成sprite图片，可以把单个图片直接转成base64，base64加载完后，CssSprite自动判断用backgroundImage直接渲染相应序列帧的base64图片。
+
+## 视频文件如何导出为序列图片？
+- 导入视频文件到PhotoShop：
+1. 打开PhotoShop软件
+2. 文件-> 新建
+3. 填写“宽度”和“高度”为视频的宽高像素
+4. 文件-> 导入 -> 视频帧到图片
+
+- 导出序列图片
+1. 文件-> 导出-> 将图层导出到文件
+2. 选择目标位置，不要勾选裁切图层
+
+- 图片批量命名
+
+rename.js
+```javascript
+const fs = require('fs')
+
+fs.readdir('./dir/', (err, files) => {
+  if (err) throw err
+  files.forEach(function (filename) {
+    if (/png$/.test(filename) === false) {
+      return
+    }
+
+    let oldPath = './dir/' + filename
+    let newPath = './dir/' + filename.split('-')[1]
+    console.info(newPath)
+
+    fs.rename(oldPath, newPath, (err) => {
+      if (err) throw err
+      console.log(`${filename} 重命名成功!`)
+    })
+  })
+})
+```
+如上步骤就完成了视频文件导出为序列图片，此时图片较多，后面的动画一般用到**img标签渲染**。注意，一定要用loader预加载所有图片再渲染动画。用法参考[render-img.html](https://bobby169.github.io/cssSprite/example/render-img.html)
+
+## Adobe An如何导出为Sprite Sheet图片？
+
+1. 新建Movie Clip元件
+2. 完成Movie Clip动画制作
+3. 打开Libray，选中当前的Movie Clip元件
+4. 右健-> Generate Sprite Sheet
+5. Data format选用easeljs
+6. 点Export按钮
+7. 得到图片和js数据文件
+
+而后就是用CssSprite完成动画。此时我们一般用**backgroundPosition渲染**，把上面得到的js数据文件中的frames数组copy到frames中。用法参考[pig/index.html](https://bobby169.github.io/cssSprite/example/pig/index.html)
 
 ## License
 
