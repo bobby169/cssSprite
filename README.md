@@ -213,7 +213,7 @@ new AlloyTouch({
 - 图片批量命名
 
 ```bash
-// 先按你的路片路径和文件名规则修改 /bin/rename.js
+# 先按你的路片路径和文件名规则修改 /bin/rename.js
 node ./bin/rename.js
 ```
 如上步骤就完成了视频文件导出为序列图片，此时图片较多，后面的动画一般用到**img标签渲染**。注意，一定要用loader预加载所有图片再渲染动画。用法参考[render-img.html](https://bobby169.github.io/cssSprite/example/render-img.html)
