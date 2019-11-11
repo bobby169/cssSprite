@@ -212,29 +212,17 @@ new AlloyTouch({
 
 - 图片批量命名
 
-rename.js
-```javascript
-const fs = require('fs')
-
-fs.readdir('./dir/', (err, files) => {
-  if (err) throw err
-  files.forEach(function (filename) {
-    if (/png$/.test(filename) === false) {
-      return
-    }
-
-    let oldPath = './dir/' + filename
-    let newPath = './dir/' + filename.split('-')[1]
-    console.info(newPath)
-
-    fs.rename(oldPath, newPath, (err) => {
-      if (err) throw err
-      console.log(`${filename} 重命名成功!`)
-    })
-  })
-})
+```bash
+// 先按你的路片路径和文件名规则修改 /bin/rename.js
+node ./bin/rename.js
 ```
 如上步骤就完成了视频文件导出为序列图片，此时图片较多，后面的动画一般用到**img标签渲染**。注意，一定要用loader预加载所有图片再渲染动画。用法参考[render-img.html](https://bobby169.github.io/cssSprite/example/render-img.html)
+
+## 用nodejs自动生成Sprite Sheet图片和模板文件
+
+```bash
+node ./bin/makeSprite.js -s [yourImageDir]
+```
 
 ## Adobe An如何导出为Sprite Sheet图片？
 
