@@ -9,6 +9,8 @@ export default {
   },
   plugins: [
     babel({
+      babelrc: false,
+      presets: [['@babel/preset-env', { modules: false }]],
       exclude: 'node_modules/**' // 只编译我们的源代码
     }),
     uglify({

@@ -38,7 +38,6 @@ export default class CssSprite {
       animationend: false
     }, options)
 
-    console.info(this.options)
     this._initialize()
   }
 
@@ -110,13 +109,17 @@ export default class CssSprite {
       this._toTick()
     } else if (Array.isArray(this.options.frames) && this.options.frames.length) {
       this.totalFrames = this.options.frames.length
-      for (let i = 0; i < this.totalFrames; i++) {
-        let x = this.options.frames[i][0]
-        let y = this.options.frames[i][1]
-        let frameWidth = this.options.frames[i][2] ? this.options.frames[i][2] : this.target.clientWidth
-        let frameHeight = this.options.frames[i][3] ? this.options.frames[i][3] : this.target.clientHeight
-        this._frames.push({ x: x, y: y, width: frameWidth, height: frameHeight })
-      }
+      this.options.frames.forEach((frame) => {
+        if (Array.isArray(frame)) {
+          const x = frame[0]
+          const y = frame[1]
+          const width = frame[2] ? frame[2] : this.target.clientWidth
+          const height = frame[3] ? frame[3] : this.target.clientHeight
+          this._frames.push({ x, y, width, height })
+        } else if (!isNaN(frame.x) && !isNaN(frame.y) && !isNaN(frame.width) && !isNaN(frame.height)) {
+          this._frames.push(frame)
+        }
+      })
       this._toTick()
     } else if (this.options.frames.width !== null && this.options.frames.height !== null) {
       this._frameWidth = this.options.frames.width
