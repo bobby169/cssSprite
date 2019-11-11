@@ -221,6 +221,7 @@ node ./bin/rename.js
 ## 用nodejs自动生成Sprite Sheet图片和模板文件
 
 ```bash
+# [yourImageDir]替换成你的图片文件夹，相对于./bin/路径
 node ./bin/makeSprite.js -s [yourImageDir]
 ```
 
