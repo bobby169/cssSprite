@@ -16,22 +16,30 @@
   "dependencies": {
     "i": "^0.3.6",
     "rollup": "^1.6.0",
-    "rollup-plugin-uglify": "^6.0.2",
-    "rollup-plugin-babel": "^4.3.2"
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-uglify": "^6.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1",
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.4.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-preset-env": "^1.7.0",
+    "commander": "^4.0.0",
+    "create-html": "^4.1.0",
     "eslint": "^5.8.0",
     "eslint-plugin-eslint-plugin": "^2.0.1",
     "eslint-plugin-jest": "^22.3.0",
     "eslint-plugin-vue": "^5.0.0",
-    "jest": "^24.3.1"
+    "glob": "^7.1.6",
+    "jest": "^24.3.1",
+    "spritesmith": "^3.4.0"
   },
   "scripts": {
     "build": "npm run test && rollup --config rollup.config.js",
