@@ -213,15 +213,13 @@ export default class CssSprite {
   _checkLoop (frameIndex, finalFrame) {
     frameIndex++
     if (frameIndex >= finalFrame) {
+      frameIndex = 0
       if (this.currentAnimation && this.currentAnimation.next) {
-        frameIndex = 0
         this.currentAnimation = this.options.animations[this.currentAnimation.next]
         this._tick()
       } else if (this.options.loop === -1) {
-        frameIndex = 0
         this._tick()
       } else if (this.options.loop > 0 && this._loopIndex < this.options.loop - 1) {
-        frameIndex = 0
         this._loopIndex++
         this._tick()
       } else {
