@@ -34,6 +34,7 @@ export default class CssSprite {
       paused: false,
       frameIndex: 0,
       loop: -1,
+      loaded: false,
       change: false,
       animationend: false
     }, options)
@@ -120,7 +121,7 @@ export default class CssSprite {
           this._frames.push(frame)
         }
       })
-      this._toTick()
+      this._load(this.options.images)
     } else if (this.options.frames.width !== null && this.options.frames.height !== null) {
       this._frameWidth = this.options.frames.width
       this._frameHeight = this.options.frames.height
@@ -132,15 +133,19 @@ export default class CssSprite {
       }
 
       let frameCount = 0
-      let frameWidth = this._frameWidth
-      let frameHeight = this._frameHeight
-      let spacing = this._spacing
-      let margin = this._margin
-      let totalFrames = this.totalFrames
+      const frameWidth = this._frameWidth
+      const frameHeight = this._frameHeight
+      const spacing = this._spacing
+      const margin = this._margin
+      const totalFrames = this.totalFrames
+
+      if (!frameWidth || !frameHeight) {
+        throw new Error('frames.width or frames.height must set number and greater than 0')
+      }
 
       this._loadImage((width, height) => {
-        let imgW = width
-        let imgH = height
+        const imgW = width
+        const imgH = height
         let y = margin
         while (y <= imgH - margin - frameHeight) {
           let x = margin
@@ -149,7 +154,7 @@ export default class CssSprite {
               break
             }
             frameCount++
-            this._frames.push({ x: x, y: y, width: frameWidth, height: frameHeight })
+            this._frames.push({ x, y, width: frameWidth, height: frameHeight })
             x += frameWidth + spacing
           }
           y += frameHeight + spacing
@@ -158,8 +163,6 @@ export default class CssSprite {
         if (this.totalFrames === undefined) {
           this.totalFrames = frameCount
         }
-
-        this._toTick()
       })
     }
   }
@@ -173,7 +176,7 @@ export default class CssSprite {
   }
 
   _getCss (element, property) {
-    let camelize = function (str) {
+    const camelize = function (str) {
       return str.replace(/-+(.)?/g, function (match, chr) {
         return chr ? chr.toUpperCase() : ''
       })
@@ -181,22 +184,42 @@ export default class CssSprite {
     return element.style[camelize(property)] || getComputedStyle(element, '').getPropertyValue(property)
   }
 
+  _load (src, successCallback) {
+    if (typeof src !== 'string' || src.trim() === '') {
+      return
+    }
+    const tag = document.createElement('img')
+    tag.src = src
+    if (tag.complete) {
+      this._onLoad(tag, successCallback)
+    } else {
+      tag.onload = () => {
+        this._onLoad(tag, successCallback)
+        tag.onload = tag.onerror = null
+      }
+    }
+  }
+
+  _onLoad (tag, successCallback) {
+    typeof this.options.loaded === 'function' && this.options.loaded.call(this, tag)
+    typeof successCallback === 'function' && successCallback.call(this, tag)
+    if (typeof this.options.images === 'string') {
+      this.target.style.backgroundImage = `url(${tag.src})`
+    }
+    this._toTick()
+  }
+
   _loadImage (callback) {
     let imageSrc
     if (typeof this.options.images === 'string') {
       imageSrc = this.options.images
-      this.target.style.backgroundImage = `url(${imageSrc})`
     } else {
       imageSrc = this._getCss(this.target, 'background-image').replace(/url\((['"])?(.*?)\1\)/gi, '$2')
     }
-    let image = new Image()
 
-    image.onload = () => {
-      let width = image.width
-      let height = image.height
-      callback(width, height)
-    }
-    image.src = imageSrc
+    this._load(imageSrc, (tag) => {
+      callback(tag.naturalWidth, tag.naturalWidth)
+    })
   }
 
   _getFrameIndex () {
@@ -204,7 +227,7 @@ export default class CssSprite {
   }
 
   _setFrameIndex (frameIndex) {
-    let total = this.options.animations ? this.currentAnimation.length : this.totalFrames
+    const total = this.options.animations ? this.currentAnimation.length : this.totalFrames
     frameIndex = frameIndex > total - 1 ? 0 : frameIndex
     frameIndex = frameIndex < 0 ? total - 1 : frameIndex
     this._frameIndex = frameIndex
@@ -223,9 +246,7 @@ export default class CssSprite {
         this._loopIndex++
         this._tick()
       } else {
-        if (typeof this.options.animationend === 'function') {
-          this.options.animationend.call(this)
-        }
+        typeof this.options.animationend === 'function' && this.options.animationend.call(this)
       }
     } else {
       this._tick()
@@ -239,7 +260,7 @@ export default class CssSprite {
       this._frameIndex = this._checkLoop(this._frameIndex, this.totalFrames)
     } else {
       if (this.currentAnimation === undefined) {
-        for (let k in this.options.animations) {
+        for (const k in this.options.animations) {
           this.currentAnimation = this.options.animations[k]
           break
         }
@@ -309,7 +330,7 @@ export default class CssSprite {
    * @param currentFrame:Number，实际图片每帧的顺序编号
    */
   frame (currentFrame) {
-    let $target = this.target
+    const $target = this.target
     if (typeof currentFrame === 'undefined' || isNaN(currentFrame)) {
       currentFrame = this.currentFrame
     }
@@ -329,8 +350,9 @@ export default class CssSprite {
       }
       this._currentAppendChild = $target.appendChild(this.options.images[currentFrame])
     } else {
-      if (typeof this.options.images === 'string' && this.options.images !== '') {
-        $target.style.backgroundImage = `url(${this.options.images})`
+      if (!this._frames.length) {
+        console.warn('this._frames.length is 0!')
+        return
       }
       $target.style.backgroundPosition = (-this._frames[currentFrame].x) + 'px ' + (-this._frames[currentFrame].y) + 'px'
       $target.style.width = `${this._frames[currentFrame].width}px`
@@ -340,9 +362,7 @@ export default class CssSprite {
     // 和createjs.Sprite的this.currentFrame保持一致
     this.currentFrame = currentFrame
 
-    if (typeof this.options.change === 'function') {
-      this.options.change.apply(this, [currentFrame, this._frameIndex])
-    }
+    typeof this.options.change === 'function' && this.options.change.apply(this, [currentFrame, this._frameIndex])
   }
 
   /**
@@ -422,7 +442,7 @@ try {
  * @returns {Array}
  */
 CssSprite.createAnimations = function (begin, end) {
-  let arr = []
+  const arr = []
   while (end - begin >= 0) {
     arr.push(begin)
     begin++

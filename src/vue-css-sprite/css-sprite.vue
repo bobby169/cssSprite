@@ -49,6 +49,8 @@ export default {
       type: Number,
       default: -1
     },
+    // 图片加载完回调函数
+    loaded: Function,
     // 可选，每帧执行的回调函数
     change: Function,
     // 可选，动画执行完的回调函数
@@ -72,6 +74,9 @@ export default {
     stop () {
       this.cssSprite.stop()
     },
+    onLoaded (img) {
+      this.$emit('loaded', img)
+    },
     onChange (frameIndex) {
       this.$emit('change', frameIndex)
     },
@@ -86,34 +91,41 @@ export default {
     },
     getCurrentAnimationName () {
       return this.cssSprite.currentAnimationName
+    },
+    getOptions () {
+      return {
+        target: this.$el,
+        images: this.images,
+        frames: this.frames,
+        fps: this.fps,
+        duration: this.duration,
+        paused: this.paused,
+        animations: this.animations,
+        frameIndex: this.frameIndex,
+        loop: this.loop,
+        loaded: this.onLoaded,
+        change: this.onChange,
+        animationend: this.onAnimationend
+      }
     }
   },
   watch: {
-    'fps' (val) {
+    fps (val) {
       this.cssSprite.fps(val)
     },
-    'frameIndex' (val) {
+    frameIndex (val) {
       this.cssSprite.frameIndex = val
     },
-    'paused' (val) {
+    paused (val) {
       this.cssSprite.paused = val
+    },
+    images () {
+      this.cssSprite.stop()
+      this.cssSprite = new CssSprite(this.getOptions())
     }
   },
   mounted () {
-    let options = {
-      target: this.$el,
-      images: this.images,
-      frames: this.frames,
-      fps: this.fps,
-      duration: this.duration,
-      paused: this.paused,
-      animations: this.animations,
-      frameIndex: this.frameIndex,
-      loop: this.loop,
-      change: this.onChange,
-      animationend: this.onAnimationend
-    }
-    this.cssSprite = new CssSprite(options)
+    this.cssSprite = new CssSprite(this.getOptions())
   },
   destroyed () {
     this.cssSprite.stop()
