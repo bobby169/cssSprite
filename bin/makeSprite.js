@@ -16,6 +16,11 @@ if (!program.sourceDir) {
   return
 }
 
+if (!fs.existsSync(program.sourceDir)) {
+  console.warn(`the ${program.sourceDir} does not exit!`)
+  return
+}
+
 if (!program.destDir) {
   program.destDir = `${program.sourceDir}_sprite`
 }
