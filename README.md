@@ -237,6 +237,9 @@ node ./bin/makeSprite.js -s [yourImageDir]
 
 而后就是用CssSprite完成动画。此时我们一般用**backgroundPosition渲染**，把上面得到的js数据文件中的frames数组copy到frames中。用法参考[pig/index.html](https://bobby169.github.io/cssSprite/example/pig/index.html)
 
+## 最佳实践
+如果用background-position（sprite图片）渲染，控制不同动画元素的显示和隐藏，我们首先会用display:none/block进行切换，在部分ios app为uiWebview的环境中，会出现闪动现象。改为opacity:0/1进行切换可以解决闪动问题。
+
 ## License
 
 所有代码采用 [MIT License](http://opensource.org/licenses/MIT) 开源。
